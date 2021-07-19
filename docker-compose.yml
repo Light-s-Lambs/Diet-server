@@ -1,0 +1,21 @@
+version: "3.8"
+
+volumes:
+  django_db: {}
+
+services:
+  mongodb:
+    image: mongo
+    ports: 
+      - "27017:27017"
+    volumes:
+      - django_db:/data/db/django_db
+  django:
+    build: .
+    depends_on:
+      - mongodb
+    ports:
+      - "8000:8000"
+    command: ["python","manage.py","runserver", "0:8000"]
+    volumes:
+      - ./workspace:/diet-server/
